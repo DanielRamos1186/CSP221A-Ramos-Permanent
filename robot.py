@@ -100,3 +100,32 @@ def run_task_safely(robot, **kwargs):
         print(result)
     finally:
         print(f"{robot.name} battery: {robot.battery}%")
+
+def demonstrate_mutable_class_attribute_trap():
+    class BuggyRobot:
+        logs = []
+        
+        def __init__(self, name):
+            self.name = name
+            
+        def add_log(self, entry):
+            self.logs.append(entry)
+
+    class FixedRobot:
+        def __init__(self, name):
+            self.name = name
+            self.logs = []
+            
+        def add_log(self, entry):
+            self.logs.append(entry)
+
+if __name__ == "__main__":
+    roomba = CleaningRobot("Roomba", battery=10)
+    c3 = ProtocolRobot.from_config({"name": "C3", "battery": 100})
+    
+    fleet = [roomba, c3]
+    fleet_report(fleet)
+    
+    run_task_safely(c3, target="rebel forces")
+    run_task_safely(roomba, amount=100)
+    run_task_safely(roomba, amount=20)
