@@ -1,5 +1,13 @@
 from abc import ABC, abstractmethod
 
+class InsufficientBatteryError(Exception):
+    def __init__(self, name, required, available):
+        message = f"{name} needs {required}% battery for this task but only has {available}%"
+        super().__init__(message)
+        self.name = name
+        self.required = required
+        self.available = available
+
 class Robot(ABC):
     manufacturer = "Cyberdyne"
     population = 0
