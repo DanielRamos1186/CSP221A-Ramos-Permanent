@@ -104,7 +104,7 @@ def run_task_safely(robot, **kwargs):
 
 def demonstrate_mutable_class_attribute_trap():
     class BuggyRobot:
-        logs = []
+        logs = []  
         
         def __init__(self, name):
             self.name = name
@@ -112,13 +112,25 @@ def demonstrate_mutable_class_attribute_trap():
         def add_log(self, entry):
             self.logs.append(entry)
 
+    buggy1 = BuggyRobot("Bot1")
+    buggy2 = BuggyRobot("Bot2")
+    buggy1.add_log("Started up.")
+    
+    print(f"Buggy sharing: {buggy2.logs}") 
+
     class FixedRobot:
         def __init__(self, name):
             self.name = name
-            self.logs = []
+            self.logs = []  
             
         def add_log(self, entry):
             self.logs.append(entry)
+
+    fixed1 = FixedRobot("Fix1")
+    fixed2 = FixedRobot("Fix2")
+    fixed1.add_log("Started up.")
+    
+    print(f"Fixed isolation: {fixed2.logs}")
 
 if __name__ == "__main__":
     roomba = CleaningRobot("Roomba", battery=10)
