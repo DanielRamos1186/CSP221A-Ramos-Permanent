@@ -1,5 +1,6 @@
 from abc import ABC, abstractmethod
 import logging
+import functools
 
 logging.basicConfig(level=logging.INFO)
 
