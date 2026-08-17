@@ -1,4 +1,7 @@
 from abc import ABC, abstractmethod
+import logging
+
+logging.basicConfig(level=logging.INFO)
 
 class InsufficientBatteryError(Exception):
     def __init__(self, name, required, available):
@@ -71,3 +74,17 @@ class ProtocolRobot(Robot):
         self.use_battery(battery_cost)
         target = kwargs.get("target", "human")
         return f"{self.name}: Translated communications for {target}."
+
+def fleet_report(robots):
+    for bot in robots:
+        print(str(bot))
+
+def run_task_safely(robot, **kwargs):
+    try:
+        result = robot.perform_task(**kwargs)
+    except InsufficientBatteryError as e:
+        logging.error(e)
+    else:
+        print(result)
+    finally:
+        print(f"{robot.name} battery: {robot.battery}%")
