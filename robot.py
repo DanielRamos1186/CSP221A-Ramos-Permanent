@@ -3,6 +3,15 @@ import logging
 
 logging.basicConfig(level=logging.INFO)
 
+def log_action(func):
+    @functools.wraps(func)
+    def wrapper(self, *args, **kwargs):
+        logging.info(f"Calling {func.__name__}")
+        result = func(self, *args, **kwargs)
+        logging.info(f"{func.__name__} finished")
+        return result
+    return wrapper
+
 class InsufficientBatteryError(Exception):
     def __init__(self, name, required, available):
         message = f"{name} needs {required}% battery for this task but only has {available}%"
@@ -57,6 +66,7 @@ class CleaningRobot(Robot):
         self.dust_capacity = dust_capacity
         self.dust_collected = 0
 
+    @log_action
     def perform_task(self, **kwargs):
         battery_cost = 5
         self.use_battery(battery_cost)
@@ -69,6 +79,7 @@ class ProtocolRobot(Robot):
         super().__init__(name, battery)
         self.languages = languages
 
+    @log_action
     def perform_task(self, **kwargs):
         battery_cost = 15
         self.use_battery(battery_cost)
