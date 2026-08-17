@@ -47,3 +47,27 @@ class Robot(ABC):
     @abstractmethod
     def perform_task(self, **kwargs):
         pass
+
+class CleaningRobot(Robot):
+    def __init__(self, name, battery=100, dust_capacity=500):
+        super().__init__(name, battery)
+        self.dust_capacity = dust_capacity
+        self.dust_collected = 0
+
+    def perform_task(self, **kwargs):
+        battery_cost = 5
+        self.use_battery(battery_cost)
+        amount = kwargs.get("amount", 50)
+        self.dust_collected = min(self.dust_capacity, self.dust_collected + amount)
+        return f"Cleaned {amount} dust. Total: {self.dust_collected}"
+
+class ProtocolRobot(Robot):
+    def __init__(self, name, battery=100, languages=6000000):
+        super().__init__(name, battery)
+        self.languages = languages
+
+    def perform_task(self, **kwargs):
+        battery_cost = 15
+        self.use_battery(battery_cost)
+        target = kwargs.get("target", "human")
+        return f"{self.name}: Translated communications for {target}."
