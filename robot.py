@@ -43,11 +43,12 @@ class Robot(ABC):
 
     def __str__(self):
         return f"{self.name} ({self.battery}% battery)"
-
+    
     def __repr__(self):
         return f"Robot(name={self.name!r}, battery={self.battery!r})"
-
-    @classmethod
+    
+    #add the classmethod for config to bot
+    @classmethod 
     def from_config(cls, config_dict):
         return cls(config_dict["name"], battery=config_dict.get("battery", 100))
 
